@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Movement2D",
 "language": "GDScript",
 "path": "res://Entities/Movement/Movement2D.gd"
+}, {
+"base": "Node",
+"class": "Rotation2D",
+"language": "GDScript",
+"path": "res://Entities/Movement/Rotation2D.gd"
 } ]
 _global_script_class_icons={
-"Movement2D": ""
+"Movement2D": "",
+"Rotation2D": ""
 }
 
 [application]

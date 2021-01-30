@@ -5,6 +5,7 @@ const ACCELERATION = 1.0 / 4.0;
 const DECELERATION = ACCELERATION * 1.5;
 
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
+signal move;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,7 +30,12 @@ func updateMovement(delta):
 	if Input.is_key_pressed(KEY_K):
 		deltaSpeed *= 2;
 	
-	self.position += deltaSpeed * self.movement.direction;
+	var velocity = deltaSpeed * self.movement.direction;
+	
+	if velocity.length() > 0:
+		self.position += velocity;
+		emit_signal("move");
+	
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
