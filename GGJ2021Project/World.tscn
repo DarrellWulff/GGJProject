@@ -10,7 +10,7 @@ script = ExtResource( 2 )
 [node name="View" parent="." instance=ExtResource( 1 )]
 
 [node name="creature" type="Sprite" parent="."]
-position = Vector2( 1023.73, -3.51137 )
+position = Vector2( 111.607, -146.216 )
 scale = Vector2( 0.234448, 0.24089 )
 texture = ExtResource( 4 )
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
