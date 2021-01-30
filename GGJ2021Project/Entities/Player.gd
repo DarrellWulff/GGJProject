@@ -34,7 +34,10 @@ func updateMovement(delta):
 	var velocity = deltaSpeed * self.movement.direction;
 	
 	if velocity.length() > 0:
-		move_and_collide(velocity);
+		var collision = move_and_collide(velocity);
+		if collision:
+			velocity.slide(collision.normal);
+			self.position += velocity;
 		emit_signal("move");
 	
 	pass
