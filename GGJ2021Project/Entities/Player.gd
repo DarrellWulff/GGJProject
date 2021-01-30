@@ -1,4 +1,4 @@
-extends Area2D
+extends KinematicBody2D
 
 const SPEED = 300;
 const ACCELERATION = 1.0 / 4.0;
@@ -13,18 +13,20 @@ func _ready():
 
 func updateMovement(delta):
 	var amountX : float = 0.0;
-	if Input.is_key_pressed(KEY_A):
+	if Input.is_action_pressed("INPUT_LEFT"):
 		amountX += -1.0;
-	if Input.is_key_pressed(KEY_D):
+	if Input.is_action_pressed("INPUT_RIGHT"):
 		amountX += 1.0;
 	
 	var amountY : float = 0.0;
-	if Input.is_key_pressed(KEY_W):
+	if Input.is_action_pressed("INPUT_UP"):
 		amountY += -1.0;
-	if Input.is_key_pressed(KEY_S):
+	if Input.is_action_pressed("INPUT_DOWN"):
 		amountY += 1.0;
 	
-	self.movement.updateMovement(Vector2(amountX, amountY));
+	#self.movement.updateMovement(Vector2(amountX, amountY));
+	
+	move_and_collide(Vector2(amountX, amountY))
 	
 	var deltaSpeed = SPEED * delta;
 	if Input.is_key_pressed(KEY_K):
@@ -40,5 +42,8 @@ func updateMovement(delta):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	updateMovement(delta);
+	#updateMovement(delta);
 	pass
+
+func _physics_process(delta):
+	updateMovement(delta)
