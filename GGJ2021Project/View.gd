@@ -6,6 +6,8 @@ onready var player = get_node("Player");
 
 var lastPosition : Vector2;
 
+signal updateWorldSignal(position);
+
 func _ready():
 	player.position = Vector2(0.0, 0.0);
 	lastPosition = player.position;
@@ -22,4 +24,8 @@ func updateCamera():
 	get_viewport().set_canvas_transform(canvasTransform);
 	
 	lastPosition = player.position;
+	pass
+
+func _physics_process(delta):
+	emit_signal("updateWorldSignal", player.position);
 	pass
