@@ -3,6 +3,18 @@ extends Node2D
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x;
 
+var visitedBoxes = {};
+var seedVal : int;
+
+func _ready():
+	var seedString : String = "Hello World!";
+	if seedString:
+		self.seedVal = seedString.hash();
+	else:
+		randomize();
+		self.seedVal = randi();
+	pass;
+
 func getLayer(axis : int) -> int:
 	if axis > 0:
 		axis -= boxSize / 2;
@@ -16,19 +28,19 @@ func getLayer(axis : int) -> int:
 			return 0;
 		else:
 			return (axis / boxSize) - 1;
-	pass
+	pass;
 
 func getCorner1(absLayer : int):
-	var val = 2 * absLayer;
-	return val * (val - 1);
+	var value = 2 * absLayer;
+	return value * (value - 1);
 
 func getCorner2(absLayer : int):
-	var val = 2 * absLayer;
-	return val * val;
+	var value = 2 * absLayer;
+	return value * value;
 
 func getCorner3(absLayer : int):
-	var val = 2 * absLayer;
-	return val * (val + 1);
+	var value = 2 * absLayer;
+	return value * (value + 1);
 
 func getCorner4(absLayer : int):
 	return 4 * absLayer * (absLayer + 1);
@@ -59,9 +71,55 @@ func getBoxNum(layerX : int, layerY : int):
 		else:
 			return getCorner4(absY - 1) + absY + layerX;
 	
-	pass
+	pass;
 
-func getWorldBox(position : Vector2):
-	return getBoxNum(getLayer(position.x), getLayer(position.y));
+func getRandomPosition(positionMin : Vector2, positionMax : Vector2) -> Vector2:
+	var randProportion : Vector2 = Vector2(randf(), randf());
+	var invProportion : Vector2 = Vector2(1.0, 1.0) - randProportion;
+	
+	return Vector2(randProportion.x * positionMin.x + invProportion.x * positionMax.x,
+		randProportion.y * positionMin.y + invProportion.y * positionMax.y);
+
+func createRandomObject():
+	var value = randf();
+	
+	if value < 0.5:
+		return null;
+	else:
+		
+		
+		return;
+	
+	pass;
+
+func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
+	
+	var randObject = createRandomObject();
+	
+	while randObject:
+		var position : Vector2 = getRandomPosition(positionMin, positionMax);
+		randObject.position = position;
+		randObject = createRandomObject();
+	
+	pass;
+
+func createWorldBox(position : Vector2, boxNum : int):
+	var halfBoxSize = boxSize / 2;
+	var positionMin : Vector2 = ((position - halfBoxSize) / boxSize) + halfBoxSize;
+	var positionMax : Vector2 = ((position + halfBoxSize) / boxSize) - halfBoxSize;
+	
+	seed(seedVal + boxNum);
+	generateRandomObjects(positionMin, positionMax);
+	
+	return true;
+
+func updateWorld(position : Vector2):
+	var boxNum : int = getBoxNum(getLayer(position.x), getLayer(position.y));
+	
+	if !self.visitedBoxes.has(boxNum):
+		self.visitedBoxes[boxNum] = createWorldBox(position, boxNum);
+
+	pass;
+
 
 
