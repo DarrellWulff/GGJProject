@@ -1,20 +1,21 @@
 extends Node2D
 
-const BOX_SIZE : int = 100;
+onready var screenSize = get_viewport().size;
+onready var boxSize : int = screenSize.x;
 
 func getLayer(axis : int) -> int:
 	if axis > 0:
-		axis -= BOX_SIZE / 2;
+		axis -= boxSize / 2;
 		if axis < 0:
 			return 0;
 		else:
-			return (axis / BOX_SIZE) + 1;
+			return (axis / boxSize) + 1;
 	else:
-		axis += BOX_SIZE / 2;
+		axis += boxSize / 2;
 		if axis > 0:
 			return 0;
 		else:
-			return (axis / BOX_SIZE) - 1;
+			return (axis / boxSize) - 1;
 	pass
 
 func getCorner1(absLayer : int):
