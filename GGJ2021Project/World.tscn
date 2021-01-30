@@ -1,11 +1,17 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://View.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://Images/ground.png" type="Texture" id=3]
 [ext_resource path="res://Images/creature.png" type="Texture" id=4]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
+
+[node name="Ground" type="Sprite" parent="."]
+position = Vector2( 257.044, 147.042 )
+scale = Vector2( 1.92042, 1.12347 )
+texture = ExtResource( 3 )
 
 [node name="View" parent="." instance=ExtResource( 1 )]
 
@@ -13,4 +19,7 @@ script = ExtResource( 2 )
 position = Vector2( 111.607, -146.216 )
 scale = Vector2( 0.234448, 0.24089 )
 texture = ExtResource( 4 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.423529, 0.372549, 0.372549, 1 )
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
