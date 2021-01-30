@@ -1,19 +1,21 @@
 extends Node2D
 
 onready var screenSize = get_viewport().size;
-onready var boxSize : int = screenSize.x;
+onready var boxSize : int = screenSize.x / 2;
 onready var halfBoxSize : int = boxSize / 2;
 
 var visitedBoxes = {};
-var seedVal : int;
+var lastVisitedBox : int;
 
 func _ready():
-	var seedString : String = "Hello World!";
-	if seedString:
-		self.seedVal = seedString.hash();
-	else:
-		randomize();
-		self.seedVal = randi();
+	#var seedString : String = "Hello World!";
+	#if seedString:
+	#	self.seedVal = seedString.hash();
+	#else:
+	randomize();
+	#self.seedVal = randi();
+	self.visitedBoxes[0] = true;
+	self.lastVisitedBox = 1;
 	pass;
 
 func getLayer(axis : int) -> int:
@@ -84,7 +86,7 @@ func getRandomPosition(positionMin : Vector2, positionMax : Vector2) -> Vector2:
 func getRandomObject():
 	var value = randf();
 	
-	if value < 0.25:
+	if value < 0.5:
 		return null;
 	else:
 		return load("res://Objects//Boulder.tscn");
@@ -108,18 +110,40 @@ func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize, layerY * self.boxSize - self.halfBoxSize);
 	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize, layerY * self.boxSize + self.halfBoxSize);
 	
-	seed(seedVal + boxNum);
+	#seed(seedVal + boxNum);
 	generateRandomObjects(positionMin, positionMax);
 	
 	return true;
+
+func generateBox(layerX : int, layerY : int):
+	var boxNum : int = getBoxNum(layerX, layerY);
+	
+	if !self.visitedBoxes.has(boxNum):
+		self.visitedBoxes[boxNum] = createWorldBox(layerX, layerY, boxNum);
+	
+	pass;
+
+func generateLocalBoxes(layerX : int, layerY : int):
+	
+	generateBox(layerX, layerY - 1);
+	generateBox(layerX + 1, layerY - 1);
+	generateBox(layerX + 1, layerY);
+	generateBox(layerX + 1, layerY + 1);
+	generateBox(layerX, layerY + 1);
+	generateBox(layerX - 1, layerY + 1);
+	generateBox(layerX - 1, layerY);
+	generateBox(layerX - 1, layerY - 1);
+	
+	pass;
 
 func updateWorld(position : Vector2):
 	var layerX : int = getLayer(position.x);
 	var layerY : int = getLayer(position.y);
 	var boxNum : int = getBoxNum(layerX, layerY);
 	
-	if !self.visitedBoxes.has(boxNum):
-		self.visitedBoxes[boxNum] = createWorldBox(layerX, layerY, boxNum);
+	if boxNum != self.lastVisitedBox:
+		generateLocalBoxes(layerX, layerY);
+		self.lastVisitedBox = boxNum;
 
 	pass;
 
