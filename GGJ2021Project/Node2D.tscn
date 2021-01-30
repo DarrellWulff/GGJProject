@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://View.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Images/creature.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 28.9036
 
 [node name="World" type="Node2D"]
 
@@ -11,3 +15,14 @@
 position = Vector2( 137.77, -161.676 )
 scale = Vector2( 0.234448, 0.24089 )
 texture = ExtResource( 2 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 200.327, 73.0754 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 1 )
+one_way_collision_margin = 27.1
+
+[node name="Sprite" type="Sprite" parent="StaticBody2D"]
+position = Vector2( 0, -1.25992 )
+texture = ExtResource( 3 )
