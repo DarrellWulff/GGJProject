@@ -15,7 +15,7 @@ func getLayer(axis : int) -> int:
 			return 0;
 		else:
 			return (axis / BOX_SIZE) - 1;
-	pass;
+	pass
 
 func getCorner1(absLayer : int):
 	var val = 2 * absLayer;
@@ -31,9 +31,6 @@ func getCorner3(absLayer : int):
 
 func getCorner4(absLayer : int):
 	return 4 * absLayer * (absLayer + 1);
-
-func getRowNum(absMaxLayer : int, minLayer : int):
-	pass;
 
 func getBoxNum(layerX : int, layerY : int):
 	var absX = abs(layerX);
@@ -52,17 +49,17 @@ func getBoxNum(layerX : int, layerY : int):
 				return getCorner4(absX);
 	elif absX > absY:
 		if layerX > 0:
-			return getCorner1(absX) + ;
+			return getCorner1(absX) + absX + layerY;
 		else:
-			return getCorner3(absX) + ;# remainder
+			return getCorner3(absX) + absX - layerY;
 	else:
 		if layerY > 0:
-			return getCorner2(absY) + ;
+			return getCorner2(absY) + absY - layerX;
 		else:
-			return getRowNum(absY, );# remainder
+			return getCorner4(absY - 1) + absY + layerX;
 	
-	layerY
-	
+	pass
+
 func getWorldBox(position : Vector2):
 	return getBoxNum(getLayer(position.x), getLayer(position.y));
 
