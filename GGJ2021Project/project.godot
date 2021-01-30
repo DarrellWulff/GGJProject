@@ -8,14 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "Movement2D",
+"language": "GDScript",
+"path": "res://Entities/Movement/Movement2D.gd"
+} ]
 _global_script_class_icons={
-
+"Movement2D": ""
 }
 
 [application]
 
 config/name="GGJ2021Project"
+run/main_scene="res://Node2D.tscn"
 config/icon="res://icon.png"
 
 [rendering]
