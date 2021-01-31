@@ -21,5 +21,5 @@ scale = Vector2( 0.234448, 0.24089 )
 texture = ExtResource( 4 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.0862745, 0.0705882, 0.0705882, 1 )
+color = Color( 0.423529, 0.372549, 0.372549, 1 )
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
