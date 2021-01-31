@@ -3,7 +3,7 @@ extends KinematicBody2D
 const IS_PLAYER = false;
 
 const SPEED : float = 200.0;
-const SIGHT_DISTANCE : int = 200;
+const SIGHT_DISTANCE : int = 400;
 
 func updateMovement(delta, player, closestCampfire):
 	var direction : Vector2 = player.position - self.position;
