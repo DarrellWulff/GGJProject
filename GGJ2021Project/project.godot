@@ -30,6 +30,7 @@ config/name="GGJ2021Project"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
+<<<<<<< HEAD
 [display]
 
 window/size/width=1280
@@ -70,6 +71,15 @@ Input_Run={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
  ]
 }
+=======
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="map"
+2d_physics/layer_3="enemies"
+2d_physics/layer_4="resources"
+2d_physics/layer_5="obstacles"
+>>>>>>> Jon
 
 [rendering]
 
