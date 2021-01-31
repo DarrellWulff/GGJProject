@@ -148,6 +148,8 @@ func animate_player(currentInput : Vector2, velocityInput : Vector2):
 			else:
 				anim.set_flip_h(true)
 			anim.play("Run_S")
-		
 	
-	print(currentInput)
+func hit():
+	animate_player(Vector2(0.0, 1.0), Vector2(0.0, 1.0));
+	gameOver();
+	pass;
