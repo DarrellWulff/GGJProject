@@ -8,7 +8,8 @@ const BOULDER_SPAWN_RATE : int = 64;
 const STICK_SPAWN_RATE : int = 64;
 const TAR_SPAWN_RATE : int = 64;
 const TREE_SPAWN_RATE : int = 64;
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE;
+const CAMPFIRE_SPAWN_RATE : int = 64;
+const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
@@ -18,12 +19,7 @@ var visitedBoxes = {};
 var lastVisitedBox : int;
 
 func _ready():
-	#var seedString : String = "Hello World!";
-	#if seedString:
-	#	self.seedVal = seedString.hash();
-	#else:
 	randomize();
-	#self.seedVal = randi();
 	self.visitedBoxes[0] = true;
 	self.lastVisitedBox = 1;
 	pass;
@@ -116,6 +112,10 @@ func getRandomObject():
 	if value <= (sum / self.SPAWN_RATE_SUM):
 		return load("res://Objects//Tree.tscn");
 	
+	sum += self.CAMPFIRE_SPAWN_RATE;
+	if value <= (sum / self.CAMPFIRE_SPAWN_RATE):
+		return load("res://Objects//Campfire.tscn");
+	
 	else:
 		return null; 
 	
@@ -159,7 +159,6 @@ func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize, layerY * self.boxSize - self.halfBoxSize);
 	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize, layerY * self.boxSize + self.halfBoxSize);
 	
-	#seed(seedVal + boxNum);
 	generateRandomObjects(positionMin, positionMax);
 	
 	return true;
@@ -195,6 +194,3 @@ func updateWorld(positionUpdate : Vector2):
 		self.lastVisitedBox = boxNum;
 
 	pass;
-
-
-

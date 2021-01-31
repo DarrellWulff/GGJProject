@@ -26,3 +26,4 @@ color = Color( 0.423529, 0.372549, 0.372549, 1 )
 
 [node name="Campfire" parent="." instance=ExtResource( 5 )]
 position = Vector2( -259, -128 )
+[connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]

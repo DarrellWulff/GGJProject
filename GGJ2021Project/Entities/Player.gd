@@ -53,11 +53,7 @@ func updateMovement(delta):
 	
 	self.movement.updateMovement(self.input.currentInput);
 	
-	var deltaSpeed = self.SPEED * delta;
-	#if Input.is_key_pressed(KEY_K):
-	#	deltaSpeed *= 2;
-	
-	var velocity = deltaSpeed * self.movement.direction;
+	var velocity = self.SPEED * delta * self.movement.direction;
 	
 	if velocity.length() > 0:
 		var collision = move_and_collide(velocity);
