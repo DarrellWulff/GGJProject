@@ -14,6 +14,10 @@ func _ready():
 	var canvasTransform = get_viewport().get_canvas_transform();
 	canvasTransform[2] = (screenSize / 2) - lastPosition;
 	get_viewport().set_canvas_transform(canvasTransform);
+	var timer = player.get_node("decreaseVision");
+	timer.set_wait_time( 3.0 );
+	player.set_vision_radius(20.0);
+	timer.start();
 	pass
 
 func updateCamera():
