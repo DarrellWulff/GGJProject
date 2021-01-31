@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://View.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://Menus/Menu Font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Menus/Small2.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Menus/TitleFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Menus/SmallFont.tres" type="DynamicFont" id=6]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
@@ -10,4 +14,72 @@ script = ExtResource( 2 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color( 0.0666667, 0.054902, 0.054902, 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StartMenu" type="Control" parent="CanvasLayer"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/StartMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -354.5
+margin_top = -147.5
+margin_right = 354.5
+margin_bottom = 147.5
+custom_constants/separation = 28
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_right = 709.0
+margin_bottom = 72.0
+custom_fonts/font = ExtResource( 5 )
+text = "Stay Alight"
+align = 1
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_top = 100.0
+margin_right = 709.0
+margin_bottom = 142.0
+custom_fonts/font = ExtResource( 3 )
+text = "PLAY"
+flat = true
+
+[node name="Exit" type="Button" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_top = 170.0
+margin_right = 709.0
+margin_bottom = 212.0
+custom_fonts/font = ExtResource( 3 )
+text = "EXIT"
+flat = true
+
+[node name="Label" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_top = 240.0
+margin_right = 709.0
+margin_bottom = 258.0
+custom_fonts/font = ExtResource( 6 )
+text = "Use WASD to move and collect items to keep your light on as long as possible"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_top = 286.0
+margin_right = 709.0
+margin_bottom = 295.0
+custom_fonts/font = ExtResource( 4 )
+text = "A game by Jack Kocsheka, Jon Ginsburg, and Darrell Wulff"
+align = 1
+valign = 1
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
+[connection signal="pressed" from="CanvasLayer/StartMenu/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/StartMenu/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]
