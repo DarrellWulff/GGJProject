@@ -28,6 +28,8 @@ var gameOverObject = null;
 onready var anim = $AnimatedSprite
 var currentDirection : Vector2
 
+var atCampfire : bool;
+
 signal move;
 
 func gameOver():
@@ -108,6 +110,8 @@ func _on_decreaseVision_timeout():
 	if	self.visionRadius >= self.MIN_LIGHT_RADIUS:
 		self.visionRadius -= self.LIGHT_DECREMENT_AMOUNT;
 		set_vision_radius(self.visionRadius);
+	elif self.atCampfire:
+		self.visionRadius = self.MIN_LIGHT_RADIUS;
 	else:
 		gameOver();
 		
@@ -157,3 +161,11 @@ func hit():
 	animate_player(Vector2(0.0, 1.0), Vector2(0.0, 1.0));
 	gameOver();
 	pass;
+
+func isAtCampfire(campfire) -> bool:
+	var distance = (campfire.position - self.position).length();
+	return distance <= campfire.lightRadius; 
+
+func getClosestCampfire(campfire):
+	self.atCampfire = isAtCampfire(campfire);
+	pass
