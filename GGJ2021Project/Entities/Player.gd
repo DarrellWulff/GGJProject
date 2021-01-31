@@ -32,6 +32,7 @@ signal move;
 
 func gameOver():
 	if self.alive:
+		$AudioGameOver.play()
 		set_vision_radius(0.0);
 		self.lastVisionUpdate = 0.0;
 		var gameOver = load("res://Gameplay//Game Over.tscn");
