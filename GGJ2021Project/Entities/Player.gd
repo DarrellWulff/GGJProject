@@ -83,25 +83,15 @@ func stick_collected():
 func tar_collected():
 	if	(self.timer.get_time_left() < 10.0):
 		self.timer.set_wait_time( 10.0 )
-<<<<<<< HEAD
 	pass;
-=======
-	pass
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 
 func _on_decreaseVision_timeout():
 	if	self.visionRadius >= self.MIN_LIGHT_RADIUS:
 		self.visionRadius -= self.LIGHT_DECREMENT_AMOUNT;
 		set_vision_radius(self.visionRadius);
 	else:
-<<<<<<< HEAD
 		gameOver();
 	pass;
-=======
-		self.visionRadius = 1.0;
-		self.lastVisionUpdate = 1.0;
-	pass
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 
 func _physics_process(delta):
 	if self.alive:

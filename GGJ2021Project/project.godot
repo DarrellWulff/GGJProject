@@ -30,7 +30,6 @@ config/name="GGJ2021Project"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
-<<<<<<< HEAD
 [display]
 
 window/size/width=1280
@@ -72,8 +71,6 @@ Input_Run={
  ]
 }
 
-=======
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 [rendering]
 
 quality/driver/driver_name="GLES2"

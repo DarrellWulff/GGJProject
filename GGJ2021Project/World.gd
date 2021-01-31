@@ -8,12 +8,8 @@ const BOULDER_SPAWN_RATE : int = 64;
 const STICK_SPAWN_RATE : int = 64;
 const TAR_SPAWN_RATE : int = 64;
 const TREE_SPAWN_RATE : int = 64;
-<<<<<<< HEAD
 const CAMPFIRE_SPAWN_RATE : int = 64;
 const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
-=======
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE;
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
@@ -106,11 +102,7 @@ func getRandomObject():
 	
 	sum += self.STICK_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-<<<<<<< HEAD
 		return [load("res://Objects//Stick.tscn"), false];
-=======
-		return load("res://Objects//Stick.tscn");
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 	
 	sum += self.TAR_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
@@ -118,15 +110,11 @@ func getRandomObject():
 	
 	sum += self.TREE_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-<<<<<<< HEAD
 		return [load("res://Objects//Tree.tscn"), false];
 	
 	sum += self.CAMPFIRE_SPAWN_RATE;
 	if value <= (sum / self.CAMPFIRE_SPAWN_RATE):
 		return [load("res://Objects//Campfire.tscn"), true];
-=======
-		return load("res://Objects//Tree.tscn");
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 	
 	else:
 		return null; 
