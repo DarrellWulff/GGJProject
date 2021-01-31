@@ -5,6 +5,7 @@ const WAIT_TIME : float =  1.0 / 16.0;
 onready var screenSize = get_viewport().size;
 onready var updateRadius = screenSize.x / 2.0;
 onready var player = get_node("Player");
+onready var timer = player.get_node("decreaseVision");
 
 var lastPosition : Vector2;
 
@@ -17,7 +18,6 @@ func _ready():
 	canvasTransform[2] = (self.screenSize / 2) - self.lastPosition;
 	get_viewport().set_canvas_transform(canvasTransform);
 	
-	var timer = self.player.get_node("decreaseVision");
 	timer.set_wait_time(self.WAIT_TIME);
 	self.player.set_vision_radius(5.0);
 	timer.start();

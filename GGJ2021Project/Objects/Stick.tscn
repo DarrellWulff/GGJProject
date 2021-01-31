@@ -3,9 +3,14 @@
 [ext_resource path="res://Stick.gd" type="Script" id=1]
 [ext_resource path="res://Images/Art/Objects/Stick.png" type="Texture" id=2]
 
+<<<<<<< HEAD
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 13.105
 height = 44.1885
+=======
+[sub_resource type="CircleShape2D" id=1]
+radius = 8.45104
+>>>>>>> Jon
 
 [node name="Stick" type="Area2D"]
 collision_layer = 8
