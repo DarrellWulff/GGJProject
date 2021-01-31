@@ -4,11 +4,7 @@
 [ext_resource path="res://Images/Art/Objects/Tar.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-<<<<<<< HEAD
 radius = 39.2668
-=======
-radius = 9.25933
->>>>>>> Jon
 
 [node name="Tar" type="Area2D"]
 collision_layer = 8

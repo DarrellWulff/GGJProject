@@ -28,7 +28,7 @@ texture = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Light" type="Light2D" parent="."]
-scale = Vector2( 12, 12 )
+scale = Vector2( 30, 30 )
 texture = ExtResource( 1 )
 range_item_cull_mask = 3
 shadow_enabled = true

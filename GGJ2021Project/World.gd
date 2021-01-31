@@ -6,16 +6,10 @@ const MAX_SPAWNED_OBJECTS : int = 20;
 const END_SPAWN_RATE : int = 64;
 const BOULDER_SPAWN_RATE : int = 64;
 const STICK_SPAWN_RATE : int = 64;
-const LEAF_SPAWN_RATE : int = 32
-const TAR_SPAWN_RATE : int = 32;
+const TAR_SPAWN_RATE : int = 64;
 const TREE_SPAWN_RATE : int = 64;
-<<<<<<< HEAD
 const CAMPFIRE_SPAWN_RATE : int = 64;
 const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
-=======
-const FIRE_SPAWN_RATE : int = 16;
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + LEAF_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE + FIRE_SPAWN_RATE;
->>>>>>> Jon
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
@@ -108,15 +102,7 @@ func getRandomObject():
 	
 	sum += self.STICK_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-<<<<<<< HEAD
 		return [load("res://Objects//Stick.tscn"), false];
-=======
-		return load("res://Objects//Stick.tscn");
-		
-	sum += self.LEAF_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Leaf.tscn");
->>>>>>> Jon
 	
 	sum += self.TAR_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
@@ -124,19 +110,11 @@ func getRandomObject():
 	
 	sum += self.TREE_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-<<<<<<< HEAD
 		return [load("res://Objects//Tree.tscn"), false];
 	
 	sum += self.CAMPFIRE_SPAWN_RATE;
 	if value <= (sum / self.CAMPFIRE_SPAWN_RATE):
 		return [load("res://Objects//Campfire.tscn"), true];
-=======
-		return load("res://Objects//Tree.tscn");
-		
-	sum += self.FIRE_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Campfire.tscn");
->>>>>>> Jon
 	
 	else:
 		return null; 
