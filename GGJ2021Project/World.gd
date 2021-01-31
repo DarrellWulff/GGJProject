@@ -1,6 +1,6 @@
 extends Node2D
 
-const MIN_SPAWN_DISTANCE : int = 200;
+const MIN_SPAWN_DISTANCE : int = 300;
 const MAX_SPAWNED_OBJECTS : int = 10;
 const MAX_CHECK_COUNT : int = 50;
 
@@ -12,15 +12,25 @@ const TERRAIN_RATE_SUM : int = GRASS_TERRAIN_RATE + DIRT_TERRAIN_RATE;
 
 enum { STICK, LEAF, TAR, BOULDER, TREE, CAMPFIRE, ENEMY };
 
-const END_SPAWN_RATE : int = 128;
-const STICK_SPAWN_RATE : int = 64;
-const LEAF_SPAWN_RATE : int = 64;
-const TAR_SPAWN_RATE : int = 64;
-const BOULDER_SPAWN_RATE : int = 128;
-const TREE_SPAWN_RATE : int = 128;
-const CAMPFIRE_SPAWN_RATE : int = 8;
-const ENEMY_SPAWN_RATE : int = 32;
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + STICK_SPAWN_RATE + LEAF_SPAWN_RATE + TAR_SPAWN_RATE + BOULDER_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE + ENEMY_SPAWN_RATE;
+const GRASS_END_SPAWN_RATE : int = 128;
+const GRASS_STICK_SPAWN_RATE : int = 128;
+const GRASS_LEAF_SPAWN_RATE : int = 64;
+const GRASS_TAR_SPAWN_RATE : int = 0;
+const GRASS_BOULDER_SPAWN_RATE : int = 0;
+const GRASS_TREE_SPAWN_RATE : int = 128;
+const GRASS_CAMPFIRE_SPAWN_RATE : int = 8;
+const GRASS_ENEMY_SPAWN_RATE : int = 32;
+const GRASS_SPAWN_RATE_SUM : int = GRASS_END_SPAWN_RATE + GRASS_STICK_SPAWN_RATE + GRASS_LEAF_SPAWN_RATE + GRASS_TAR_SPAWN_RATE + GRASS_BOULDER_SPAWN_RATE + GRASS_TREE_SPAWN_RATE + GRASS_CAMPFIRE_SPAWN_RATE + GRASS_ENEMY_SPAWN_RATE;
+
+const DIRT_END_SPAWN_RATE : int = 128;
+const DIRT_STICK_SPAWN_RATE : int = 0;
+const DIRT_LEAF_SPAWN_RATE : int = 64;
+const DIRT_TAR_SPAWN_RATE : int = 128;
+const DIRT_BOULDER_SPAWN_RATE : int = 128;
+const DIRT_TREE_SPAWN_RATE : int = 0;
+const DIRT_CAMPFIRE_SPAWN_RATE : int = 8;
+const DIRT_ENEMY_SPAWN_RATE : int = 32;
+const DIRT_SPAWN_RATE_SUM : int = DIRT_END_SPAWN_RATE + DIRT_STICK_SPAWN_RATE + DIRT_LEAF_SPAWN_RATE + DIRT_TAR_SPAWN_RATE + DIRT_BOULDER_SPAWN_RATE + DIRT_TREE_SPAWN_RATE + DIRT_CAMPFIRE_SPAWN_RATE + DIRT_ENEMY_SPAWN_RATE;
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
@@ -125,39 +135,76 @@ func loadTerrain(layerX : int, layerY : int):
 	
 	return terrain[1];
 
-func getRandomObject():
+func getRandomGrassObject():
 	var value = randf();
 	
-	var sum : float = self.END_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	var sum : float = self.GRASS_END_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return null;
 	
-	sum += self.STICK_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_STICK_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Stick.tscn"), STICK];
 	
-	sum += self.LEAF_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_LEAF_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Leaf.tscn"), LEAF];
 	
-	sum += self.TAR_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_TAR_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Tar.tscn"), TAR];
 	
-	sum += self.BOULDER_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_BOULDER_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Boulder.tscn"), BOULDER];
 	
-	sum += self.TREE_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_TREE_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Tree.tscn"), TREE];
 	
-	sum += self.CAMPFIRE_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_CAMPFIRE_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
 		return [load("res://Objects//Campfire.tscn"), CAMPFIRE];
 	
-	sum += self.ENEMY_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
+	sum += self.GRASS_ENEMY_SPAWN_RATE;
+	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
+		return [load("res://Entities//Enemy.tscn"), ENEMY];
+	
+	return null;
+
+func getRandomDirtObject():
+	var value = randf();
+	
+	var sum : float = self.DIRT_END_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return null;
+	
+	sum += self.DIRT_STICK_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Stick.tscn"), STICK];
+	
+	sum += self.DIRT_LEAF_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Leaf.tscn"), LEAF];
+	
+	sum += self.DIRT_TAR_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Tar.tscn"), TAR];
+	
+	sum += self.DIRT_BOULDER_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Boulder.tscn"), BOULDER];
+	
+	sum += self.DIRT_TREE_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Tree.tscn"), TREE];
+	
+	sum += self.DIRT_CAMPFIRE_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
+		return [load("res://Objects//Campfire.tscn"), CAMPFIRE];
+	
+	sum += self.DIRT_ENEMY_SPAWN_RATE;
+	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
 		return [load("res://Entities//Enemy.tscn"), ENEMY];
 	
 	return null;
@@ -168,10 +215,18 @@ func isValidPosition(objects : Array, position : Vector2) -> bool:
 			return false;
 	return true;
 
-func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
+func getRandomObject(terrainType):
+	if terrainType == GRASS:
+		return getRandomGrassObject();
+	elif terrainType == DIRT:
+		return getRandomDirtObject();
+	
+	return getRandomGrassObject();
+
+func generateRandomObjects(positionMin : Vector2, positionMax : Vector2, terrainType):
 	var campfires = [];
 	var objects = [];
-	var objectSet = getRandomObject();
+	var objectSet = getRandomObject(terrainType);
 	var checkCount = 0;
 	
 	while objectSet:
@@ -202,7 +257,7 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 			self.enemies.append(object);
 		if len(objects) > MAX_SPAWNED_OBJECTS:
 			break;
-		objectSet = getRandomObject();
+		objectSet = getRandomObject(terrainType);
 	
 	return campfires;
 
@@ -210,9 +265,9 @@ func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize + self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize - self.halfBoxSize  + self.MIN_SPAWN_DISTANCE / 4);
 	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4);
 	
-	loadTerrain(layerX, layerY);
+	var terrainType = loadTerrain(layerX, layerY);
 	
-	return generateRandomObjects(positionMin, positionMax);
+	return generateRandomObjects(positionMin, positionMax, terrainType);
 
 func generateBox(layerX : int, layerY : int):
 	var boxNum : int = getBoxNum(layerX, layerY);
