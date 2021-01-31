@@ -98,23 +98,23 @@ func getRandomObject():
 	
 	sum += self.BOULDER_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Boulder.tscn");
+		return [load("res://Objects//Boulder.tscn"), false];
 	
 	sum += self.STICK_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Stick.tscn");
+		return [load("res://Objects//Stick.tscn"), false];
 	
 	sum += self.TAR_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Tar.tscn");
+		return [load("res://Objects//Tar.tscn"), false];
 	
 	sum += self.TREE_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return load("res://Objects//Tree.tscn");
+		return [load("res://Objects//Tree.tscn"), false];
 	
 	sum += self.CAMPFIRE_SPAWN_RATE;
 	if value <= (sum / self.CAMPFIRE_SPAWN_RATE):
-		return load("res://Objects//Campfire.tscn");
+		return [load("res://Objects//Campfire.tscn"), true];
 	
 	else:
 		return null; 
@@ -128,10 +128,11 @@ func isValidPosition(objects : Array, position : Vector2) -> bool:
 	return true;
 
 func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
+	var storedObjects = [];
 	var objects = [];
-	var randObject = getRandomObject();
+	var objectSet = getRandomObject();
 	
-	while randObject:
+	while objectSet:
 		var randomPosition : Vector2 = getRandomPosition(positionMin, positionMax);
 		
 		var validPosition : bool = false;
@@ -145,23 +146,23 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 		if !validPosition:
 			continue;
 		
-		var object = randObject.instance();
+		var object = objectSet[0].instance();
 		add_child(object);
 		object.position = randomPosition;
 		objects.append(object);
+		if objectSet[1]:
+			storedObjects.append(object);
 		if len(objects) > MAX_SPAWNED_OBJECTS:
-			return;
-		randObject = getRandomObject();
+			return storedObjects;
+		objectSet = getRandomObject();
 	
-	pass;
+	return storedObjects;
 
 func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize, layerY * self.boxSize - self.halfBoxSize);
 	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize, layerY * self.boxSize + self.halfBoxSize);
 	
-	generateRandomObjects(positionMin, positionMax);
-	
-	return true;
+	return generateRandomObjects(positionMin, positionMax);
 
 func generateBox(layerX : int, layerY : int):
 	var boxNum : int = getBoxNum(layerX, layerY);
@@ -194,3 +195,18 @@ func updateWorld(positionUpdate : Vector2):
 		self.lastVisitedBox = boxNum;
 
 	pass;
+
+func getClosestCampfire(position : Vector2):
+	var boxNum : int = getBoxNum(getLayer(position.x), getLayer(position.y));
+	var closest = null;
+	var distance = 2 * self.boxSize;
+	
+	for campfire in self.visitedBoxes[boxNum]:
+		var currentDistance = (campfire.position - position).length();
+		if currentDistance <= distance:
+			closest = campfire;
+			distance = currentDistance;
+	
+	return closest;
+
+
