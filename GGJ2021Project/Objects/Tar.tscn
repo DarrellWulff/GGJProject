@@ -1,14 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Tar.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Images/Art/Objects/Tar.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-<<<<<<< HEAD
 radius = 39.2668
-=======
-radius = 31.8044
->>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 
 [node name="Tar" type="Area2D"]
 collision_layer = 8
