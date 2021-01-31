@@ -132,22 +132,22 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 	var randObject = getRandomObject();
 	
 	while randObject:
-		var position : Vector2 = getRandomPosition(positionMin, positionMax);
+		var randomPosition : Vector2 = getRandomPosition(positionMin, positionMax);
 		
 		var validPosition : bool = false;
 		
 		for i in range(5):
-			if isValidPosition(objects, position):
+			if isValidPosition(objects, randomPosition):
 				validPosition = true;
 				break;
-			position = getRandomPosition(positionMin, positionMax);
+			randomPosition = getRandomPosition(positionMin, positionMax);
 		
 		if !validPosition:
 			continue;
 		
 		var object = randObject.instance();
 		add_child(object);
-		object.position = position;
+		object.position = randomPosition;
 		objects.append(object);
 		if len(objects) > MAX_SPAWNED_OBJECTS:
 			return;
@@ -185,9 +185,9 @@ func generateLocalBoxes(layerX : int, layerY : int):
 	
 	pass;
 
-func updateWorld(position : Vector2):
-	var layerX : int = getLayer(position.x);
-	var layerY : int = getLayer(position.y);
+func updateWorld(positionUpdate : Vector2):
+	var layerX : int = getLayer(positionUpdate.x);
+	var layerY : int = getLayer(positionUpdate.y);
 	var boxNum : int = getBoxNum(layerX, layerY);
 	
 	if boxNum != self.lastVisitedBox:

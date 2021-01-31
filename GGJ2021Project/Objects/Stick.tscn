@@ -1,10 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Stick.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Images/Art/Objects/Stick.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-height = 63.0851
+radius = 13.105
+height = 44.1885
 
 [node name="Stick" type="Area2D"]
 collision_layer = 8
@@ -14,9 +15,10 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 0.785398
+rotation = -0.785398
 shape = SubResource( 1 )
 [connection signal="body_entered" from="." to="." method="_on_Stick_body_entered"]

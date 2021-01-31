@@ -32,6 +32,7 @@ func updateCamera():
 	lastPosition = player.position;
 	pass
 
-func _physics_process(delta):
+func _process(delta):
 	emit_signal("updateWorldSignal", player.position);
 	pass
+

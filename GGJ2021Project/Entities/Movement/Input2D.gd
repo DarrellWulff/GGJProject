@@ -9,8 +9,8 @@ var inputDirection : Vector2;
 var switchInput : Vector2;
 var currentInput : Vector2;
 
-func _init(updateFrames : int):
-	self.updateFrames = updateFrames;
+func _init(updateFrameAmount : int):
+	self.updateFrames = updateFrameAmount;
 	self.frameX = 0;
 	self.frameY = 0;
 	self.inputDirection = Vector2(0.0, 0.0);
