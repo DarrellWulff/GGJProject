@@ -8,6 +8,7 @@ radius = 13.105
 height = 44.1885
 
 [node name="Stick" type="Area2D"]
+z_index = 1
 collision_layer = 8
 script = ExtResource( 1 )
 __meta__ = {

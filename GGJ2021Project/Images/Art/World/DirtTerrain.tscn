@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Images/Art/World/Dirt.tscn" type="PackedScene" id=1]
+
+[node name="DirtTerrain" type="Node2D"]
+z_index = -1
+
+[node name="Dirt" parent="." instance=ExtResource( 1 )]
+position = Vector2( -96, 96 )
+
+[node name="Dirt2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -96, -32 )
+
+[node name="Dirt3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 32, -32 )
+
+[node name="Dirt4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 32, 96 )

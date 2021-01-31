@@ -28,6 +28,7 @@ func _ready():
 	randomize();
 	self.visitedBoxes[0] = [];
 	self.lastVisitedBox = 1;
+	loadTerrain(0, 0);
 	pass;
 
 func getLayer(axis : int) -> int:
@@ -179,9 +180,18 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 	
 	return campfires;
 
+func loadTerrain(layerX : int, layerY : int):
+	var terrain = load("res://Images//Art//World/LargeDirtTerrain.tscn");
+	var object = terrain.instance();
+	add_child(object);
+	object.position = Vector2(layerX * self.boxSize, layerY * self.boxSize);
+	pass;
+
 func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize + self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize - self.halfBoxSize  + self.MIN_SPAWN_DISTANCE / 4);
 	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4);
+	
+	loadTerrain(layerX, layerY);
 	
 	return generateRandomObjects(positionMin, positionMax);
 
