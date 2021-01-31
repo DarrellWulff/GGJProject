@@ -29,5 +29,4 @@ shadow_enabled = true
 script = ExtResource( 4 )
 
 [node name="decreaseVision" type="Timer" parent="."]
-autostart = true
 [connection signal="timeout" from="decreaseVision" to="." method="_on_decreaseVision_timeout"]
