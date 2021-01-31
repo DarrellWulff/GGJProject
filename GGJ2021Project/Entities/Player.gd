@@ -21,6 +21,7 @@ signal move;
 func set_vision_radius(a : float):
 	vision.transform.get_scale().x = a;
 	vision.transform.get_scale().y = a;
+	visionRadius = a;
 	pass
 
 func updateMovement(delta):
