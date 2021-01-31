@@ -27,6 +27,8 @@ onready var boxSize : int = screenSize.x / 2;
 onready var halfBoxSize : int = boxSize / 2;
 onready var player = get_node("View").get_node("Player");
 
+onready var startMenu = $CanvasLayer/StartMenu
+
 var visitedBoxes = {};
 var lastVisitedBox : int;
 var enemies = [];
@@ -37,6 +39,9 @@ func _ready():
 	self.lastVisitedBox = 1;
 	loadTerrain(0, 0);
 	pass;
+
+func gameBegin():
+	pass
 
 func getLayer(axis : int) -> int:
 	if axis > 0:
