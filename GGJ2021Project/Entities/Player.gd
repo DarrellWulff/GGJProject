@@ -37,6 +37,8 @@ func gameOver():
 		self.gameOverObject = gameOver.instance();
 		add_child(self.gameOverObject);
 		self.alive = false;
+		
+		anim.hide()
 	pass;
 
 func set_vision_radius(visionRadius : float):
