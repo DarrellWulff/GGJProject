@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const IS_PLAYER = true;
+
 const INPUT_STARTUP = 4;
 var input : Input2D = Input2D.new(INPUT_STARTUP);
 
