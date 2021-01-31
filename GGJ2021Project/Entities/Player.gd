@@ -11,6 +11,7 @@ const DECELERATION = ACCELERATION * 1.5;
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
 
 const MIN_LIGHT_RADIUS : float = 0.5;
+const MAX_LIGHT_RADIUS : float = 7.0;
 const LIGHT_DECREMENT_AMOUNT : float = 1.0 / 64.0;
 const WAIT_TIME : float = 1.0 / 16.0;
 onready var vision = get_node("Vision");
@@ -31,6 +32,7 @@ signal move;
 
 func gameOver():
 	if self.alive:
+		$AudioGameOver.play()
 		set_vision_radius(0.0);
 		self.lastVisionUpdate = 0.0;
 		var gameOver = load("res://Gameplay//Game Over.tscn");
@@ -84,7 +86,7 @@ func updateMovement(delta):
 	pass;
 
 func leaf_collected():
-	if self.visionRadius >= MIN_LIGHT_RADIUS:
+	if (self.visionRadius >= MIN_LIGHT_RADIUS) and (self.visionRadius < MAX_LIGHT_RADIUS):
 		self.visionRadius *= 1.4;
 		self.lastVisionUpdate = self.visionRadius;
 		set_vision_radius(self.visionRadius);
