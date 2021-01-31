@@ -58,6 +58,11 @@ animations = [ {
 "loop": true,
 "name": "Run_F",
 "speed": 8.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Run_B",
+"speed": 8.0
 } ]
 
 [node name="Player" type="KinematicBody2D"]

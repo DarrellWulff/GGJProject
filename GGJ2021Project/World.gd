@@ -46,14 +46,17 @@ var enemies = [];
 signal closestCampfire(campfire);
 
 func _ready():
+	
+	#At very bottom!
+	gameEnter()
+	
 	randomize();
 	self.visitedBoxes[0] = [];
 	self.lastVisitedBox = 1;
 	loadTerrain(0, 0);
+	
 	pass;
 
-func gameBegin():
-	pass
 
 func getLayer(axis : int) -> int:
 	if axis > 0:
@@ -397,5 +400,18 @@ func _process(delta):
 	emit_signal("closestCampfire", getClosestCampfire(self.player.position));
 	pass;
 
+#START MENU
+func gameEnter():
+	get_tree().paused = true
+	startMenu.show()
+
+func gameBegin():
+	startMenu.hide()
+	get_tree().paused = false
+
+func _on_PlayButton_pressed():
+	gameBegin()
 
 
+func _on_Exit_pressed():
+	get_tree().quit()
