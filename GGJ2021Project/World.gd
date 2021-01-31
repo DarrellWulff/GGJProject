@@ -1,5 +1,8 @@
 extends Node2D
 
+const MIN_SPAWN_DISTANCE : int = 75;
+const MAX_SPAWNED_OBJECTS : int = 20;
+
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
 onready var halfBoxSize : int = boxSize / 2;
@@ -93,15 +96,36 @@ func getRandomObject():
 	
 	pass;
 
+func isValidPosition(objects : Array, position : Vector2) -> bool:
+	for currentObject in objects:
+		if (currentObject.position - position).length() < MIN_SPAWN_DISTANCE:
+			return false;
+	return true;
+
 func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
-	
+	var objects = [];
 	var randObject = getRandomObject();
 	
 	while randObject:
+		var position : Vector2 = getRandomPosition(positionMin, positionMax);
+		
+		var validPosition : bool = false;
+		
+		for i in range(5):
+			if isValidPosition(objects, position):
+				validPosition = true;
+				break;
+			position = getRandomPosition(positionMin, positionMax);
+		
+		if !validPosition:
+			continue;
+		
 		var object = randObject.instance();
 		add_child(object);
-		var position : Vector2 = getRandomPosition(positionMin, positionMax);
 		object.position = position;
+		objects.append(object);
+		if len(objects) > MAX_SPAWNED_OBJECTS:
+			return;
 		randObject = getRandomObject();
 	
 	pass;
