@@ -14,6 +14,9 @@ onready var timer = get_node("decreaseVision");
 var visionRadius : float = 5.0;
 var lastVisionUpdate : float = visionRadius;
 
+var alive : bool = true;
+var gameOverObject = null;
+
 signal move;
 	
 func set_vision_radius(visionRadius : float):
@@ -38,9 +41,9 @@ func updateMovement(delta):
 	
 	self.movement.updateMovement(self.input.currentInput);
 	
-	var deltaSpeed = SPEED * delta;
-	if Input.is_key_pressed(KEY_K):
-		deltaSpeed *= 2;
+	var deltaSpeed = self.SPEED * delta;
+	#if Input.is_key_pressed(KEY_K):
+	#	deltaSpeed *= 2;
 	
 	var velocity = deltaSpeed * self.movement.direction;
 	
@@ -53,37 +56,50 @@ func updateMovement(delta):
 	
 	pass
 
-func _physics_process(delta):
-	updateMovement(delta);
-	pass
-
 func leaf_collected():
-	if visionRadius >= 12.0:
-		visionRadius *= 2.0;
-		lastVisionUpdate = visionRadius;
-		set_vision_radius(visionRadius);
+	if self.visionRadius >= 12.0:
+		self.visionRadius *= 2.0;
+		self.lastVisionUpdate = self.visionRadius;
+		set_vision_radius(self.visionRadius);
 	pass
 
 func stick_collected():
-	if lastVisionUpdate <= 20:
-		lastVisionUpdate = 20;
+	if self.lastVisionUpdate <= 20:
+		self.lastVisionUpdate = 20;
 	
-	if visionRadius >= 12 and visionRadius < 20:
-		visionRadius = lastVisionUpdate;
-		set_vision_radius(visionRadius);
+	if self.visionRadius >= 12 and self.visionRadius < 20:
+		self.visionRadius = self.lastVisionUpdate;
+		set_vision_radius(self.visionRadius);
 	pass
 	
 func tar_collected():
-	if	(timer.get_time_left() < 10.0):
-		timer.set_wait_time( 10.0 )
+	if	(self.timer.get_time_left() < 10.0):
+		self.timer.set_wait_time( 10.0 )
 	pass
 
 func _on_decreaseVision_timeout():
-	if	visionRadius >= 1.0:
-		visionRadius -= 1.0 / 64.0;
-		set_vision_radius(visionRadius);
+	if	self.visionRadius >= 1.0:
+		self.visionRadius -= 1.0 / 64.0;
+		set_vision_radius(self.visionRadius);
 	else:
-		visionRadius = 1.0;
-		lastVisionUpdate = 1.0;
+		self.visionRadius = 1.0;
+		self.lastVisionUpdate = 1.0;
 	pass
 
+func _physics_process(delta):
+	if self.alive:
+		updateMovement(delta);
+	pass
+
+func _process(delta):
+	if self.alive && Input.is_key_pressed(KEY_R):
+		var gameOver = load("res://Gameplay//Game Over.tscn");
+		self.gameOverObject = gameOver.instance();
+		add_child(self.gameOverObject);
+		self.alive = false;
+	
+	if !self.alive:
+		if Input.is_key_pressed(KEY_ENTER):
+			get_tree().reload_current_scene();
+		
+	pass
