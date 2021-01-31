@@ -8,6 +8,8 @@ const ACCELERATION = 1.0 / 4.0;
 const DECELERATION = ACCELERATION * 1.5;
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
 
+const MIN_LIGHT_RADIUS : float = 0.5;
+const LIGHT_DECREMENT_AMOUNT : float = 1.0 / 64.0;
 onready var vision = get_node("Vision");
 onready var timer = get_node("decreaseVision");
 
@@ -18,7 +20,17 @@ var alive : bool = true;
 var gameOverObject = null;
 
 signal move;
-	
+
+func gameOver():
+	if self.alive:
+		set_vision_radius(0.0);
+		self.lastVisionUpdate = 0.0;
+		var gameOver = load("res://Gameplay//Game Over.tscn");
+		self.gameOverObject = gameOver.instance();
+		add_child(self.gameOverObject);
+		self.alive = false;
+	pass;
+
 func set_vision_radius(visionRadius : float):
 	self.visionRadius = visionRadius;
 	vision.set_texture_scale(self.visionRadius);
@@ -54,14 +66,14 @@ func updateMovement(delta):
 			self.position += velocity;
 		emit_signal("move");
 	
-	pass
+	pass;
 
 func leaf_collected():
 	if self.visionRadius >= 12.0:
 		self.visionRadius *= 2.0;
 		self.lastVisionUpdate = self.visionRadius;
 		set_vision_radius(self.visionRadius);
-	pass
+	pass;
 
 func stick_collected():
 	if self.lastVisionUpdate <= 20:
@@ -70,36 +82,28 @@ func stick_collected():
 	if self.visionRadius >= 12 and self.visionRadius < 20:
 		self.visionRadius = self.lastVisionUpdate;
 		set_vision_radius(self.visionRadius);
-	pass
+	pass;
 	
 func tar_collected():
 	if	(self.timer.get_time_left() < 10.0):
 		self.timer.set_wait_time( 10.0 )
-	pass
+	pass;
 
 func _on_decreaseVision_timeout():
-	if	self.visionRadius >= 1.0:
-		self.visionRadius -= 1.0 / 64.0;
+	if	self.visionRadius >= self.MIN_LIGHT_RADIUS:
+		self.visionRadius -= self.LIGHT_DECREMENT_AMOUNT;
 		set_vision_radius(self.visionRadius);
 	else:
-		self.visionRadius = 1.0;
-		self.lastVisionUpdate = 1.0;
-	pass
+		gameOver();
+	pass;
 
 func _physics_process(delta):
 	if self.alive:
 		updateMovement(delta);
-	pass
+	pass;
 
 func _process(delta):
-	if self.alive && Input.is_key_pressed(KEY_R):
-		var gameOver = load("res://Gameplay//Game Over.tscn");
-		self.gameOverObject = gameOver.instance();
-		add_child(self.gameOverObject);
-		self.alive = false;
-	
 	if !self.alive:
 		if Input.is_key_pressed(KEY_ENTER):
 			get_tree().reload_current_scene();
-		
-	pass
+	pass;
