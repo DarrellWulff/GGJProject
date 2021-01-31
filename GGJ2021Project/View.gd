@@ -19,7 +19,7 @@ func _ready():
 	
 	var timer = self.player.get_node("decreaseVision");
 	timer.set_wait_time(self.WAIT_TIME);
-	self.player.set_vision_radius(5.0);
+	self.player.set_vision_radius(4.0);
 	timer.start();
 	
 	pass

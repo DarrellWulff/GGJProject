@@ -1,17 +1,24 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Images/Art/Objects/Boulder.png" type="Texture" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 33.8696
 
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -34.1114, 0.312618, -33.7141, 3.22614, -33.1844, 6.2721, -33.052, 8.12616, -32.3898, 10.1127, -31.7276, 11.5694, -30.9331, 14.2181, -29.2114, 16.9992, -27.2249, 19.5154, -25.6357, 22.0316, -23.5168, 24.5478, -21.0006, 26.2695, -19.279, 27.5938, -17.6898, 29.0506, -14.5114, 30.3749, -10.9357, 31.6992, -6.9627, 32.7587, -3.91674, 33.4208, 0.718407, 33.9506, 3.8968, 33.4208, 6.94275, 33.0235, 11.1806, 31.9641, 13.5644, 30.7722, 16.8752, 29.5803, 19.259, 27.9911, 21.7752, 25.6073, 23.8942, 23.6208, 26.6752, 20.4424, 28.7942, 18.0586, 30.9131, 14.0856, 32.105, 10.9072, 32.8996, 7.72886, 33.4293, 4.6829, 33.6942, 2.16668, 33.8266, -0.0846786, 28.9266, -0.879276, 23.6293, -0.879276, 17.2725, -0.879276, 11.8428, -0.879276, 5.61842, -0.746845, -1.53295, -0.746845, -9.08163, -1.01171, -17.2925, -0.746845, -26.5628, -0.746845 )
+
 [node name="Boulder" type="StaticBody2D"]
 collision_layer = 16
 collision_mask = 5
 
 [node name="Sprite" type="Sprite" parent="."]
+light_mask = 2
 scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 2 )
