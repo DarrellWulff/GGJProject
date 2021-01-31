@@ -35,5 +35,10 @@ func updateCamera():
 	pass
 
 func _process(delta):
+<<<<<<< HEAD
+	emit_signal("updateWorldSignal", player.position);
+=======
 	emit_signal("updateWorldSignal", self.player.position);
+>>>>>>> c912190a53c45af5e205664b6330a7244350ac1d
 	pass
+
