@@ -4,6 +4,7 @@ const MIN_SPAWN_DISTANCE : int = 200;
 const MAX_SPAWNED_OBJECTS : int = 10;
 const MAX_CHECK_COUNT : int = 50;
 
+enum { STICK, LEAF, TAR, BOULDER, TREE, CAMPFIRE, ENEMY };
 const END_SPAWN_RATE : int = 128;
 const STICK_SPAWN_RATE : int = 64;
 const LEAF_SPAWN_RATE : int = 64;
@@ -11,18 +12,21 @@ const TAR_SPAWN_RATE : int = 64;
 const BOULDER_SPAWN_RATE : int = 128;
 const TREE_SPAWN_RATE : int = 128;
 const CAMPFIRE_SPAWN_RATE : int = 8;
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + STICK_SPAWN_RATE + LEAF_SPAWN_RATE + TAR_SPAWN_RATE + BOULDER_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
+const ENEMY_SPAWN_RATE : int = 32;
+const SPAWN_RATE_SUM : int = END_SPAWN_RATE + STICK_SPAWN_RATE + LEAF_SPAWN_RATE + TAR_SPAWN_RATE + BOULDER_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE + ENEMY_SPAWN_RATE;
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
 onready var halfBoxSize : int = boxSize / 2;
+onready var player = get_node("View").get_node("Player");
 
 var visitedBoxes = {};
 var lastVisitedBox : int;
+var enemies = [];
 
 func _ready():
 	randomize();
-	self.visitedBoxes[0] = true;
+	self.visitedBoxes[0] = [];
 	self.lastVisitedBox = 1;
 	pass;
 
@@ -100,27 +104,31 @@ func getRandomObject():
 	
 	sum += self.STICK_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Stick.tscn"), false];
+		return [load("res://Objects//Stick.tscn"), STICK];
 	
 	sum += self.LEAF_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Leaf.tscn"), false];
+		return [load("res://Objects//Leaf.tscn"), LEAF];
 	
 	sum += self.TAR_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Tar.tscn"), false];
+		return [load("res://Objects//Tar.tscn"), TAR];
 	
 	sum += self.BOULDER_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Boulder.tscn"), false];
+		return [load("res://Objects//Boulder.tscn"), BOULDER];
 	
 	sum += self.TREE_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Tree.tscn"), false];
+		return [load("res://Objects//Tree.tscn"), TREE];
 	
 	sum += self.CAMPFIRE_SPAWN_RATE;
-	if value <= (sum / self.CAMPFIRE_SPAWN_RATE):
-		return [load("res://Objects//Campfire.tscn"), true];
+	if value <= (sum / self.SPAWN_RATE_SUM):
+		return [load("res://Objects//Campfire.tscn"), CAMPFIRE];
+	
+	sum += self.ENEMY_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
+		return [load("res://Entities//Enemy.tscn"), ENEMY];
 	
 	else:
 		return null; 
@@ -134,7 +142,7 @@ func isValidPosition(objects : Array, position : Vector2) -> bool:
 	return true;
 
 func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
-	var storedObjects = [];
+	var campfires = [];
 	var objects = [];
 	var objectSet = getRandomObject();
 	var checkCount = 0;
@@ -161,13 +169,15 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 		add_child(object);
 		object.position = randomPosition;
 		objects.append(object);
-		if objectSet[1]:
-			storedObjects.append(object);
+		if objectSet[1] == self.CAMPFIRE:
+			campfires.append(object);
+		elif objectSet[1] == self.ENEMY:
+			self.enemies.append(object);
 		if len(objects) > MAX_SPAWNED_OBJECTS:
 			break;
 		objectSet = getRandomObject();
 	
-	return storedObjects;
+	return campfires;
 
 func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize + self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize - self.halfBoxSize  + self.MIN_SPAWN_DISTANCE / 4);
@@ -212,11 +222,12 @@ func getClosestCampfireInBox(position : Vector2, layerX : int, layerY : int):
 	var closest = null;
 	var distance = 2 * self.boxSize;
 	
-	for campfire in self.visitedBoxes[boxNum]:
-		var currentDistance = (campfire.position - position).length();
-		if currentDistance < distance:
-			closest = campfire;
-			distance = currentDistance;
+	if self.visitedBoxes.has(boxNum):
+		for campfire in self.visitedBoxes[boxNum]:
+			var currentDistance = (campfire.position - position).length();
+			if currentDistance < distance:
+				closest = campfire;
+				distance = currentDistance;
 	
 	return [closest, distance];
 
@@ -285,3 +296,7 @@ func getClosestCampfire(position : Vector2):
 	return closestCampfire[0];
 
 
+func _physics_process(delta):
+	for enemy in self.enemies:
+		enemy.updateMovement(delta, self.player, getClosestCampfire(enemy.position));
+	pass;
