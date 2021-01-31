@@ -19,7 +19,6 @@ color = Color( 0.0666667, 0.054902, 0.054902, 1 )
 
 [node name="StartMenu" type="Control" parent="CanvasLayer"]
 pause_mode = 2
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -44,6 +43,7 @@ __meta__ = {
 margin_right = 709.0
 margin_bottom = 72.0
 custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Stay Alight"
 align = 1
 
@@ -72,12 +72,22 @@ text = "Use WASD to move and collect items to keep your light on as long as poss
 align = 1
 valign = 1
 
-[node name="Label2" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
+[node name="Label3" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
 margin_top = 286.0
 margin_right = 709.0
-margin_bottom = 295.0
+margin_bottom = 304.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0.972549, 0.262745, 0.262745, 1 )
+text = "BEWARE THE MONSTERS IN THE DARK!"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/StartMenu/VBoxContainer"]
+margin_top = 332.0
+margin_right = 709.0
+margin_bottom = 341.0
 custom_fonts/font = ExtResource( 4 )
-text = "A game by Jack Kocsheka, Jon Ginsburg, and Darrell Wulff"
+text = "A game by Jack Koscheka, Jon Ginsburg, and Darrell Wulff"
 align = 1
 valign = 1
 [connection signal="closestCampfire" from="." to="View" method="getClosestCampfire"]
