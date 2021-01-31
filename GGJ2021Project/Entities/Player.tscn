@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Images/Art/Player/ProtoPlayer.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Player.gd" type="Script" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://Images/Art/Player/Player_Anim0012.png" type="Texture" id=20]
 [ext_resource path="res://Images/Art/Player/Player_Anim0018.png" type="Texture" id=21]
 [ext_resource path="res://Images/Art/Player/Player_Anim0013.png" type="Texture" id=22]
+[ext_resource path="res://Music/Death 2.ogg" type="AudioStream" id=23]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 32.0
@@ -33,24 +34,24 @@ animations = [ {
 "name": "Idle_B",
 "speed": 2.0
 }, {
-"frames": [ ExtResource( 10 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "Run_B",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 13 ), ExtResource( 11 ) ],
 "loop": true,
 "name": "Idle_F",
 "speed": 2.0
+}, {
+"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 22 ) ],
+"loop": true,
+"name": "Run_S",
+"speed": 8.0
 }, {
 "frames": [ ExtResource( 15 ), ExtResource( 16 ) ],
 "loop": true,
 "name": "Idle_S",
 "speed": 2.0
 }, {
-"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 22 ) ],
+"frames": [ ExtResource( 10 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ) ],
 "loop": true,
-"name": "Run_S",
+"name": "Run_B",
 "speed": 8.0
 }, {
 "frames": [ ExtResource( 21 ), ExtResource( 19 ), ExtResource( 9 ), ExtResource( 8 ) ],
@@ -94,4 +95,7 @@ scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
 animation = "Idle_F"
 playing = true
+
+[node name="AudioGameOver" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 23 )
 [connection signal="timeout" from="decreaseVision" to="." method="_on_decreaseVision_timeout"]
