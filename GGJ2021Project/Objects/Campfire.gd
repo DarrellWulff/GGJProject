@@ -14,3 +14,6 @@ func _ready():
 	set_light_radius(self.DEFAULT_RADIUS);
 	pass;
 
+func hit():
+	queue_free();
+	pass;

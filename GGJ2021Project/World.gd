@@ -224,10 +224,11 @@ func getClosestCampfireInBox(position : Vector2, layerX : int, layerY : int):
 	
 	if self.visitedBoxes.has(boxNum):
 		for campfire in self.visitedBoxes[boxNum]:
-			var currentDistance = (campfire.position - position).length();
-			if currentDistance < distance:
-				closest = campfire;
-				distance = currentDistance;
+			if campfire:
+				var currentDistance = (campfire.position - position).length();
+				if currentDistance < distance:
+					closest = campfire;
+					distance = currentDistance;
 	
 	return [closest, distance];
 

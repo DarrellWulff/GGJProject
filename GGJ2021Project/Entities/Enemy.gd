@@ -20,6 +20,8 @@ func updateMovement(delta, player, closestCampfire):
 	if velocity.length() > 0:
 		var collision = move_and_collide(velocity);
 		if collision:
+			if collision.collider.has_method("hit"):
+				collision.collider.hit();
 			velocity.slide(collision.normal);
 			self.position += velocity;
 	
