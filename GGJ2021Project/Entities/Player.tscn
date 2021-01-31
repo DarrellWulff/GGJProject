@@ -1,12 +1,63 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Images/Art/Player/ProtoPlayer.png" type="Texture" id=1]
 [ext_resource path="res://Entities/Player.gd" type="Script" id=2]
 [ext_resource path="res://Images/Light.png" type="Texture" id=3]
 [ext_resource path="res://Entities/Vision.gd" type="Script" id=4]
+[ext_resource path="res://Images/Art/Player/Player_Anim0026.png" type="Texture" id=5]
+[ext_resource path="res://Images/Art/Player/Player_Anim0024.png" type="Texture" id=6]
+[ext_resource path="res://Images/Art/Player/Player_Anim0025.png" type="Texture" id=7]
+[ext_resource path="res://Images/Art/Player/Player_Anim0021.png" type="Texture" id=8]
+[ext_resource path="res://Images/Art/Player/Player_Anim0020.png" type="Texture" id=9]
+[ext_resource path="res://Images/Art/Player/Player_Anim0023.png" type="Texture" id=10]
+[ext_resource path="res://Images/Art/Player/Player_Anim0001.png" type="Texture" id=11]
+[ext_resource path="res://Images/Art/Player/Player_Anim0003.png" type="Texture" id=12]
+[ext_resource path="res://Images/Art/Player/Player_Anim0000.png" type="Texture" id=13]
+[ext_resource path="res://Images/Art/Player/Player_Anim0004.png" type="Texture" id=14]
+[ext_resource path="res://Images/Art/Player/Player_Anim0006.png" type="Texture" id=15]
+[ext_resource path="res://Images/Art/Player/Player_Anim0007.png" type="Texture" id=16]
+[ext_resource path="res://Images/Art/Player/Player_Anim0010.png" type="Texture" id=17]
+[ext_resource path="res://Images/Art/Player/Player_Anim0011.png" type="Texture" id=18]
+[ext_resource path="res://Images/Art/Player/Player_Anim0019.png" type="Texture" id=19]
+[ext_resource path="res://Images/Art/Player/Player_Anim0012.png" type="Texture" id=20]
+[ext_resource path="res://Images/Art/Player/Player_Anim0018.png" type="Texture" id=21]
+[ext_resource path="res://Images/Art/Player/Player_Anim0013.png" type="Texture" id=22]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 32.0
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 12 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "Idle_B",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 16 ) ],
+"loop": true,
+"name": "Idle_S",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "Idle_F",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 22 ) ],
+"loop": true,
+"name": "Run_S",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 21 ), ExtResource( 19 ), ExtResource( 9 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "Run_F",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "Run_B",
+"speed": 5.0
+} ]
 
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 29
@@ -16,6 +67,7 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 position = Vector2( 1.90735e-06, -1.90735e-06 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
@@ -36,4 +88,10 @@ texture = ExtResource( 3 )
 color = Color( 1, 1, 1, 0.490196 )
 
 [node name="decreaseVision" type="Timer" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 4, 4 )
+frames = SubResource( 2 )
+animation = "Run_B"
+frame = 3
 [connection signal="timeout" from="decreaseVision" to="." method="_on_decreaseVision_timeout"]
