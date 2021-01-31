@@ -4,7 +4,14 @@ const MIN_SPAWN_DISTANCE : int = 200;
 const MAX_SPAWNED_OBJECTS : int = 10;
 const MAX_CHECK_COUNT : int = 50;
 
+enum { GRASS, DIRT };
+
+const GRASS_TERRAIN_RATE : int = 64;
+const DIRT_TERRAIN_RATE : int = 64;
+const TERRAIN_RATE_SUM : int = GRASS_TERRAIN_RATE + DIRT_TERRAIN_RATE;
+
 enum { STICK, LEAF, TAR, BOULDER, TREE, CAMPFIRE, ENEMY };
+
 const END_SPAWN_RATE : int = 128;
 const STICK_SPAWN_RATE : int = 64;
 const LEAF_SPAWN_RATE : int = 64;
@@ -96,6 +103,28 @@ func getRandomPosition(positionMin : Vector2, positionMax : Vector2) -> Vector2:
 	return Vector2(randProportion.x * positionMin.x + invProportion.x * positionMax.x,
 		randProportion.y * positionMin.y + invProportion.y * positionMax.y);
 
+func getRandomTerrain():
+	var value = randf();
+	
+	var sum : float = self.GRASS_TERRAIN_RATE;
+	if value <= (sum / self.TERRAIN_RATE_SUM):
+		return [load("res://Images//Art//World/ForestGrass.tscn"), GRASS];
+	
+	sum += self.DIRT_TERRAIN_RATE;
+	if value <= (sum / self.TERRAIN_RATE_SUM):
+		return [load("res://Images//Art//World/LargeDirtTerrain.tscn"), DIRT];
+	
+	return [load("res://Images//Art//World/ForestGrass.tscn"), GRASS];
+
+func loadTerrain(layerX : int, layerY : int):
+	var terrain = getRandomTerrain();
+	
+	var object = terrain[0].instance();
+	add_child(object);
+	object.position = Vector2(layerX * self.boxSize, layerY * self.boxSize);
+	
+	return terrain[1];
+
 func getRandomObject():
 	var value = randf();
 	
@@ -131,10 +160,7 @@ func getRandomObject():
 	if value <= (sum / self.SPAWN_RATE_SUM):
 		return [load("res://Entities//Enemy.tscn"), ENEMY];
 	
-	else:
-		return null; 
-	
-	pass;
+	return null;
 
 func isValidPosition(objects : Array, position : Vector2) -> bool:
 	for currentObject in objects:
@@ -179,13 +205,6 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 		objectSet = getRandomObject();
 	
 	return campfires;
-
-func loadTerrain(layerX : int, layerY : int):
-	var terrain = load("res://Images//Art//World/LargeDirtTerrain.tscn");
-	var object = terrain.instance();
-	add_child(object);
-	object.position = Vector2(layerX * self.boxSize, layerY * self.boxSize);
-	pass;
 
 func createWorldBox(layerX : int, layerY : int, boxNum : int):
 	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize + self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize - self.halfBoxSize  + self.MIN_SPAWN_DISTANCE / 4);
