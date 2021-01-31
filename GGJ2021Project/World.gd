@@ -43,6 +43,8 @@ var visitedBoxes = {};
 var lastVisitedBox : int;
 var enemies = [];
 
+signal closestCampfire(campfire);
+
 func _ready():
 	randomize();
 	self.visitedBoxes[0] = [];
@@ -390,3 +392,10 @@ func _physics_process(delta):
 	for enemy in self.enemies:
 		enemy.updateMovement(delta, self.player, getClosestCampfire(enemy.position));
 	pass;
+
+func _process(delta):
+	emit_signal("closestCampfire", getClosestCampfire(self.player.position));
+	pass;
+
+
+

@@ -9,6 +9,7 @@ onready var player = get_node("Player");
 var lastPosition : Vector2;
 
 signal updateWorldSignal(position);
+signal closestCampfire(campfire);
 
 func _ready():
 	self.player.position = Vector2(0.0, 0.0);
@@ -38,3 +39,6 @@ func _process(delta):
 	emit_signal("updateWorldSignal", self.player.position);
 	pass
 
+func getClosestCampfire(campfire):
+	emit_signal("closestCampfire", campfire);
+	pass

@@ -10,4 +10,5 @@ script = ExtResource( 2 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color( 0.423529, 0.372549, 0.372549, 1 )
+[connection signal="closestCampfire" from="." to="View" method="getClosestCampfire"]
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
