@@ -1,15 +1,17 @@
 extends Node2D
 
-const MIN_SPAWN_DISTANCE : int = 75;
-const MAX_SPAWNED_OBJECTS : int = 20;
+const MIN_SPAWN_DISTANCE : int = 200;
+const MAX_SPAWNED_OBJECTS : int = 10;
+const MAX_CHECK_COUNT : int = 50;
 
-const END_SPAWN_RATE : int = 64;
-const BOULDER_SPAWN_RATE : int = 64;
+const END_SPAWN_RATE : int = 128;
 const STICK_SPAWN_RATE : int = 64;
+const LEAF_SPAWN_RATE : int = 64;
 const TAR_SPAWN_RATE : int = 64;
-const TREE_SPAWN_RATE : int = 64;
-const CAMPFIRE_SPAWN_RATE : int = 64;
-const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
+const BOULDER_SPAWN_RATE : int = 128;
+const TREE_SPAWN_RATE : int = 128;
+const CAMPFIRE_SPAWN_RATE : int = 8;
+const SPAWN_RATE_SUM : int = END_SPAWN_RATE + STICK_SPAWN_RATE + LEAF_SPAWN_RATE + TAR_SPAWN_RATE + BOULDER_SPAWN_RATE + TREE_SPAWN_RATE + CAMPFIRE_SPAWN_RATE;
 
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
@@ -96,17 +98,21 @@ func getRandomObject():
 	if value <= (sum / self.SPAWN_RATE_SUM):
 		return null;
 	
-	sum += self.BOULDER_SPAWN_RATE;
-	if value <= (sum / self.SPAWN_RATE_SUM):
-		return [load("res://Objects//Boulder.tscn"), false];
-	
 	sum += self.STICK_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
 		return [load("res://Objects//Stick.tscn"), false];
 	
+	sum += self.LEAF_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
+		return [load("res://Objects//Leaf.tscn"), false];
+	
 	sum += self.TAR_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
 		return [load("res://Objects//Tar.tscn"), false];
+	
+	sum += self.BOULDER_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
+		return [load("res://Objects//Boulder.tscn"), false];
 	
 	sum += self.TREE_SPAWN_RATE;
 	if value <= (sum / self.SPAWN_RATE_SUM):
@@ -131,6 +137,7 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 	var storedObjects = [];
 	var objects = [];
 	var objectSet = getRandomObject();
+	var checkCount = 0;
 	
 	while objectSet:
 		var randomPosition : Vector2 = getRandomPosition(positionMin, positionMax);
@@ -144,7 +151,11 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 			randomPosition = getRandomPosition(positionMin, positionMax);
 		
 		if !validPosition:
-			continue;
+			if checkCount >= MAX_CHECK_COUNT:
+				break;
+			else:
+				checkCount += 1;
+				continue;
 		
 		var object = objectSet[0].instance();
 		add_child(object);
@@ -153,14 +164,14 @@ func generateRandomObjects(positionMin : Vector2, positionMax : Vector2):
 		if objectSet[1]:
 			storedObjects.append(object);
 		if len(objects) > MAX_SPAWNED_OBJECTS:
-			return storedObjects;
+			break;
 		objectSet = getRandomObject();
 	
 	return storedObjects;
 
 func createWorldBox(layerX : int, layerY : int, boxNum : int):
-	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize, layerY * self.boxSize - self.halfBoxSize);
-	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize, layerY * self.boxSize + self.halfBoxSize);
+	var positionMin : Vector2 = Vector2(layerX * self.boxSize - self.halfBoxSize + self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize - self.halfBoxSize  + self.MIN_SPAWN_DISTANCE / 4);
+	var positionMax : Vector2 = Vector2(layerX * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4, layerY * self.boxSize + self.halfBoxSize - self.MIN_SPAWN_DISTANCE / 4);
 	
 	return generateRandomObjects(positionMin, positionMax);
 
@@ -196,17 +207,81 @@ func updateWorld(positionUpdate : Vector2):
 
 	pass;
 
-func getClosestCampfire(position : Vector2):
-	var boxNum : int = getBoxNum(getLayer(position.x), getLayer(position.y));
+func getClosestCampfireInBox(position : Vector2, layerX : int, layerY : int):
+	var boxNum : int = getBoxNum(layerX, layerY);
 	var closest = null;
 	var distance = 2 * self.boxSize;
 	
 	for campfire in self.visitedBoxes[boxNum]:
 		var currentDistance = (campfire.position - position).length();
-		if currentDistance <= distance:
+		if currentDistance < distance:
 			closest = campfire;
 			distance = currentDistance;
 	
-	return closest;
+	return [closest, distance];
+
+func getClosestCampfire(position : Vector2):
+	var layerX : int = getLayer(position.x);
+	var layerY : int = getLayer(position.y);
+	
+	var closestCampfire = getClosestCampfireInBox(position, layerX, layerY);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX, layerY - 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX, layerY - 1);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX + 1, layerY - 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX + 1, layerY - 1);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX + 1, layerY);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX + 1, layerY);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX + 1, layerY + 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX + 1, layerY + 1);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX, layerY + 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX, layerY + 1);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX - 1, layerY + 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX - 1, layerY + 1);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX - 1, layerY);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX - 1, layerY);
+	
+	if closestCampfire[0]:
+		var current = getClosestCampfireInBox(position, layerX - 1, layerY - 1);
+		if current[0] && current[1] < closestCampfire[1]:
+			closestCampfire = current;
+	else:
+		closestCampfire = getClosestCampfireInBox(position, layerX - 1, layerY - 1);
+	
+	return closestCampfire;
 
 
