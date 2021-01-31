@@ -3,6 +3,13 @@ extends Node2D
 const MIN_SPAWN_DISTANCE : int = 75;
 const MAX_SPAWNED_OBJECTS : int = 20;
 
+const END_SPAWN_RATE : int = 64;
+const BOULDER_SPAWN_RATE : int = 64;
+const STICK_SPAWN_RATE : int = 64;
+const TAR_SPAWN_RATE : int = 64;
+const TREE_SPAWN_RATE : int = 64;
+const SPAWN_RATE_SUM : int = END_SPAWN_RATE + BOULDER_SPAWN_RATE + STICK_SPAWN_RATE + TAR_SPAWN_RATE + TREE_SPAWN_RATE;
+
 onready var screenSize = get_viewport().size;
 onready var boxSize : int = screenSize.x / 2;
 onready var halfBoxSize : int = boxSize / 2;
@@ -89,10 +96,28 @@ func getRandomPosition(positionMin : Vector2, positionMax : Vector2) -> Vector2:
 func getRandomObject():
 	var value = randf();
 	
-	if value < 0.5:
+	var sum : float = END_SPAWN_RATE;
+	if value <= (sum / SPAWN_RATE_SUM):
 		return null;
-	else:
+	
+	sum += BOULDER_SPAWN_RATE;
+	if value <= (sum / SPAWN_RATE_SUM):
 		return load("res://Objects//Boulder.tscn");
+	
+	sum += STICK_SPAWN_RATE;
+	if value <= (sum / SPAWN_RATE_SUM):
+		return load("res://Objects//Stick.tscn");
+	
+	sum += TAR_SPAWN_RATE;
+	if value <= (sum / SPAWN_RATE_SUM):
+		return load("res://Objects//Tar.tscn");
+	
+	sum += TREE_SPAWN_RATE;
+	if value <= (sum / SPAWN_RATE_SUM):
+		return load("res://Objects//Tree.tscn");
+	
+	else:
+		return null; 
 	
 	pass;
 
