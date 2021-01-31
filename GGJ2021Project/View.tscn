@@ -7,4 +7,5 @@
 script = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+[connection signal="closestCampfire" from="." to="Player" method="closestCampfire"]
 [connection signal="move" from="Player" to="." method="updateCamera"]
