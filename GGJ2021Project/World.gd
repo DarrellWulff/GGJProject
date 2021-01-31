@@ -282,6 +282,6 @@ func getClosestCampfire(position : Vector2):
 	else:
 		closestCampfire = getClosestCampfireInBox(position, layerX - 1, layerY - 1);
 	
-	return closestCampfire;
+	return closestCampfire[0];
 
 
