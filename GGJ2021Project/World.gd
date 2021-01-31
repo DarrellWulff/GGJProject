@@ -96,24 +96,24 @@ func getRandomPosition(positionMin : Vector2, positionMax : Vector2) -> Vector2:
 func getRandomObject():
 	var value = randf();
 	
-	var sum : float = END_SPAWN_RATE;
-	if value <= (sum / SPAWN_RATE_SUM):
+	var sum : float = self.END_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
 		return null;
 	
-	sum += BOULDER_SPAWN_RATE;
-	if value <= (sum / SPAWN_RATE_SUM):
+	sum += self.BOULDER_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
 		return load("res://Objects//Boulder.tscn");
 	
-	sum += STICK_SPAWN_RATE;
-	if value <= (sum / SPAWN_RATE_SUM):
+	sum += self.STICK_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
 		return load("res://Objects//Stick.tscn");
 	
-	sum += TAR_SPAWN_RATE;
-	if value <= (sum / SPAWN_RATE_SUM):
+	sum += self.TAR_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
 		return load("res://Objects//Tar.tscn");
 	
-	sum += TREE_SPAWN_RATE;
-	if value <= (sum / SPAWN_RATE_SUM):
+	sum += self.TREE_SPAWN_RATE;
+	if value <= (sum / self.SPAWN_RATE_SUM):
 		return load("res://Objects//Tree.tscn");
 	
 	else:

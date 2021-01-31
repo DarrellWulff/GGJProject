@@ -8,16 +8,31 @@ const ACCELERATION = 1.0 / 4.0;
 const DECELERATION = ACCELERATION * 1.5;
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
 
+const MIN_LIGHT_RADIUS : float = 0.5;
+const LIGHT_DECREMENT_AMOUNT : float = 1.0 / 64.0;
 onready var vision = get_node("Vision");
 onready var timer = get_node("decreaseVision");
 
 var visionRadius : float = 5.0;
 var lastVisionUpdate : float = visionRadius;
 
+var alive : bool = true;
+var gameOverObject = null;
+
 signal move;
-	
-func set_vision_radius(visionRadiusAmount : float):
-	self.visionRadius = visionRadiusAmount;
+
+func gameOver():
+	if self.alive:
+		set_vision_radius(0.0);
+		self.lastVisionUpdate = 0.0;
+		var gameOver = load("res://Gameplay//Game Over.tscn");
+		self.gameOverObject = gameOver.instance();
+		add_child(self.gameOverObject);
+		self.alive = false;
+	pass;
+
+func set_vision_radius(visionRadius : float):
+	self.visionRadius = visionRadius;
 	vision.set_texture_scale(self.visionRadius);
 	pass;
 
@@ -38,9 +53,9 @@ func updateMovement(delta):
 	
 	self.movement.updateMovement(self.input.currentInput);
 	
-	var deltaSpeed = SPEED * delta;
-	if Input.is_action_pressed("Input_Run"):
-		deltaSpeed *= 2;
+	var deltaSpeed = self.SPEED * delta;
+	#if Input.is_key_pressed(KEY_K):
+	#	deltaSpeed *= 2;
 	
 	var velocity = deltaSpeed * self.movement.direction;
 	
@@ -51,39 +66,44 @@ func updateMovement(delta):
 			self.position += velocity;
 		emit_signal("move");
 	
-	pass
-
-func _physics_process(delta):
-	updateMovement(delta);
-	pass
+	pass;
 
 func leaf_collected():
-	if visionRadius >= 12.0:
-		visionRadius *= 2.0;
-		lastVisionUpdate = visionRadius;
-		set_vision_radius(visionRadius);
-	pass
+	if self.visionRadius >= 12.0:
+		self.visionRadius *= 2.0;
+		self.lastVisionUpdate = self.visionRadius;
+		set_vision_radius(self.visionRadius);
+	pass;
 
 func stick_collected():
-	if lastVisionUpdate <= 20:
-		lastVisionUpdate = 20;
+	if self.lastVisionUpdate <= 20:
+		self.lastVisionUpdate = 20;
 	
-	if visionRadius >= 12 and visionRadius < 20:
-		visionRadius = lastVisionUpdate;
-		set_vision_radius(visionRadius);
-	pass
+	if self.visionRadius >= 12 and self.visionRadius < 20:
+		self.visionRadius = self.lastVisionUpdate;
+		set_vision_radius(self.visionRadius);
+	pass;
 	
 func tar_collected():
-	if	(timer.get_time_left() < 10.0):
-		timer.set_wait_time( 10.0 )
-	pass
+	if	(self.timer.get_time_left() < 10.0):
+		self.timer.set_wait_time( 10.0 )
+	pass;
 
 func _on_decreaseVision_timeout():
-	if	visionRadius >= 1.0:
-		visionRadius -= 1.0 / 64.0;
-		set_vision_radius(visionRadius);
+	if	self.visionRadius >= self.MIN_LIGHT_RADIUS:
+		self.visionRadius -= self.LIGHT_DECREMENT_AMOUNT;
+		set_vision_radius(self.visionRadius);
 	else:
-		visionRadius = 1.0;
-		lastVisionUpdate = 1.0;
-	pass
+		gameOver();
+	pass;
 
+func _physics_process(delta):
+	if self.alive:
+		updateMovement(delta);
+	pass;
+
+func _process(delta):
+	if !self.alive:
+		if Input.is_key_pressed(KEY_ENTER):
+			get_tree().reload_current_scene();
+	pass;
