@@ -169,3 +169,6 @@ func isAtCampfire(campfire) -> bool:
 func getClosestCampfire(campfire):
 	self.atCampfire = isAtCampfire(campfire);
 	pass
+
+func closestCampfire(campfire):
+	pass # Replace with function body.
