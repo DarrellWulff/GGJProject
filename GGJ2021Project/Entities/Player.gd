@@ -9,20 +9,17 @@ const DECELERATION = ACCELERATION * 1.5;
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
 
 onready var vision = get_node("Vision");
-
 onready var timer = get_node("decreaseVision");
 
-var visionRadius : float = 20.0;
-
+var visionRadius : float = 5.0;
 var lastVisionUpdate : float = visionRadius;
 
 signal move;
 	
-func set_vision_radius(a : float):
-	vision.transform.get_scale().x = a;
-	vision.transform.get_scale().y = a;
-	visionRadius = a;
-	pass
+func set_vision_radius(visionRadius : float):
+	self.visionRadius = visionRadius;
+	vision.set_texture_scale(self.visionRadius);
+	pass;
 
 func updateMovement(delta):
 	var amountX : float = 0.0;
@@ -81,13 +78,12 @@ func tar_collected():
 		timer.set_wait_time( 10.0 )
 	pass
 
-
 func _on_decreaseVision_timeout():
-	if	visionRadius >= 7.0:
-		visionRadius -= 0.5;
+	if	visionRadius >= 1.0:
+		visionRadius -= 1.0 / 64.0;
 		set_vision_radius(visionRadius);
 	else:
-		visionRadius = 7.0;
-		lastVisionUpdate = 7.0;
+		visionRadius = 1.0;
+		lastVisionUpdate = 1.0;
 	pass
 
