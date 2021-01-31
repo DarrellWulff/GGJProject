@@ -1,9 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Images/Art/Objects/Rock2.png" type="Texture" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
+<<<<<<< HEAD
 radius = 27.5361
+=======
+radius = 31.6938
+>>>>>>> parent of e66f177... Fixed resource functionality. Added all necessary object spawns to RNG. Updated script to end when the light radius runs out.
 
 [node name="Boulder" type="StaticBody2D"]
 collision_layer = 16
