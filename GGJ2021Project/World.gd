@@ -44,14 +44,17 @@ var lastVisitedBox : int;
 var enemies = [];
 
 func _ready():
+	
+	#At very bottom!
+	gameEnter()
+	
 	randomize();
 	self.visitedBoxes[0] = [];
 	self.lastVisitedBox = 1;
 	loadTerrain(0, 0);
+	
 	pass;
 
-func gameBegin():
-	pass
 
 func getLayer(axis : int) -> int:
 	if axis > 0:
@@ -390,3 +393,20 @@ func _physics_process(delta):
 	for enemy in self.enemies:
 		enemy.updateMovement(delta, self.player, getClosestCampfire(enemy.position));
 	pass;
+
+
+#START MENU
+func gameEnter():
+	get_tree().paused = true
+	startMenu.show()
+
+func gameBegin():
+	startMenu.hide()
+	get_tree().paused = false
+
+func _on_PlayButton_pressed():
+	gameBegin()
+
+
+func _on_Exit_pressed():
+	get_tree().quit()
