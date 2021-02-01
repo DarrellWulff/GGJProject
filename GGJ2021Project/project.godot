@@ -28,7 +28,7 @@ _global_script_class_icons={
 
 config/name="GGJ2021Project"
 run/main_scene="res://World.tscn"
-config/icon="res://icon.png"
+config/icon="res://Images/Art/Player/Player_Anim0000.png"
 
 [display]
 

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/BackTrack1.wav-830fa2ef6841efe422aa70ab5d2c17bc.sample"
+
+[deps]
+
+source_file="res://Music/BackTrack1.wav"
+dest_files=[ "res://.import/BackTrack1.wav-830fa2ef6841efe422aa70ab5d2c17bc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

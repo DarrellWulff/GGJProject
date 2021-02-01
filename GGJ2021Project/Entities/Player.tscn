@@ -34,11 +34,6 @@ animations = [ {
 "name": "Idle_B",
 "speed": 2.0
 }, {
-"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 22 ) ],
-"loop": true,
-"name": "Run_S",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 15 ), ExtResource( 16 ) ],
 "loop": true,
 "name": "Idle_S",
@@ -52,6 +47,11 @@ animations = [ {
 "frames": [ ExtResource( 21 ), ExtResource( 19 ), ExtResource( 9 ), ExtResource( 8 ) ],
 "loop": true,
 "name": "Run_F",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 22 ) ],
+"loop": true,
+"name": "Run_S",
 "speed": 8.0
 }, {
 "frames": [ ExtResource( 13 ), ExtResource( 11 ) ],
