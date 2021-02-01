@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+export (PackedScene) var gameOverScene
+
 const IS_PLAYER = true;
 
 const INPUT_STARTUP = 4;
@@ -37,9 +39,8 @@ func gameOver():
 		$AudioGameOver.play()
 		set_vision_radius(0.0);
 		self.lastVisionUpdate = 0.0;
-		var gameOver = load("res://Gameplay//Game Over.tscn");
-		self.gameOverObject = gameOver.instance();
-		add_child(self.gameOverObject);
+		var gameOverClone = gameOverScene.instance()
+		add_child(gameOverClone);
 		self.alive = false;
 		
 		anim.hide()
