@@ -169,11 +169,12 @@ func hit():
 
 func isAtCampfire(campfire) -> bool:
 	var distance = (campfire.position - self.position).length();
-	return distance <= campfire.lightRadius; 
-
-func getClosestCampfire(campfire):
-	self.atCampfire = isAtCampfire(campfire);
-	pass
+	return campfire.in_radius(distance);
 
 func closestCampfire(campfire):
-	pass # Replace with function body.
+	if campfire:
+		self.atCampfire = isAtCampfire(campfire);
+	else:
+		self.atCampfire = false;
+	pass
+
