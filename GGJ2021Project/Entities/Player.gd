@@ -11,7 +11,7 @@ const DECELERATION = ACCELERATION * 1.5;
 var movement : Movement2D = Movement2D.new(ACCELERATION, DECELERATION);
 
 const MIN_LIGHT_RADIUS : float = 0.5;
-const MAX_LIGHT_RADIUS : float = 7.0;
+const MAX_LIGHT_RADIUS : float = 4.5;
 const LIGHT_DECREMENT_AMOUNT : float = 1.0 / 64.0;
 const WAIT_TIME : float = 1.0 / 16.0;
 onready var vision = get_node("Vision");
