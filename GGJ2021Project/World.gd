@@ -39,6 +39,8 @@ onready var player = get_node("View").get_node("Player");
 
 onready var startMenu = $CanvasLayer/StartMenu
 
+onready var gameMusic = $GameMusic
+
 var visitedBoxes = {};
 var lastVisitedBox : int;
 var enemies = [];
@@ -408,6 +410,7 @@ func gameEnter():
 func gameBegin():
 	startMenu.hide()
 	get_tree().paused = false
+	gameMusic.play()
 
 func _on_PlayButton_pressed():
 	gameBegin()

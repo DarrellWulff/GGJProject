@@ -90,7 +90,10 @@ custom_fonts/font = ExtResource( 4 )
 text = "A game by Jack Koscheka, Jon Ginsburg, and Darrell Wulff"
 align = 1
 valign = 1
+
+[node name="GameMusic" type="AudioStreamPlayer2D" parent="."]
 [connection signal="closestCampfire" from="." to="View" method="getClosestCampfire"]
+[connection signal="closestCampfire" from="View" to="View/Player" method="closestCampfire"]
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
 [connection signal="pressed" from="CanvasLayer/StartMenu/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/StartMenu/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]
