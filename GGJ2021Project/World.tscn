@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://View.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
@@ -7,9 +7,27 @@
 [ext_resource path="res://Menus/TitleFont.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Menus/SmallFont.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Music/BackTrack1.wav" type="AudioStream" id=7]
+[ext_resource path="res://Objects/Stick.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Images/Art/World/ForestGrass.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Objects/Tar.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Objects/Campfire.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Objects/Leaf.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Objects/Tree.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Objects/Boulder.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Entities/Enemy.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Images/Art/World/LargeDirtTerrain.tscn" type="PackedScene" id=16]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
+stickScene = ExtResource( 8 )
+leafScene = ExtResource( 12 )
+tarScene = ExtResource( 10 )
+boulderScene = ExtResource( 14 )
+campfireScene = ExtResource( 11 )
+treeScene = ExtResource( 13 )
+enemyScene = ExtResource( 15 )
+grassScene = ExtResource( 9 )
+dirtScene = ExtResource( 16 )
 
 [node name="View" parent="." instance=ExtResource( 1 )]
 

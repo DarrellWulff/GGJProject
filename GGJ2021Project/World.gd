@@ -45,6 +45,17 @@ var visitedBoxes = {};
 var lastVisitedBox : int;
 var enemies = [];
 
+export (PackedScene) var stickScene
+export (PackedScene) var leafScene
+export (PackedScene) var tarScene
+export (PackedScene) var boulderScene
+export (PackedScene) var campfireScene
+export (PackedScene) var treeScene
+export (PackedScene) var enemyScene
+
+export (PackedScene) var grassScene
+export (PackedScene) var dirtScene
+
 signal closestCampfire(campfire);
 
 func _ready():
@@ -131,13 +142,13 @@ func getRandomTerrain():
 	
 	var sum : float = self.GRASS_TERRAIN_RATE;
 	if value <= (sum / self.TERRAIN_RATE_SUM):
-		return [load("res://Images//Art//World/ForestGrass.tscn"), GRASS];
+		return [grassScene, GRASS];
 	
 	sum += self.DIRT_TERRAIN_RATE;
 	if value <= (sum / self.TERRAIN_RATE_SUM):
-		return [load("res://Images//Art//World/LargeDirtTerrain.tscn"), DIRT];
+		return [dirtScene, DIRT];
 	
-	return [load("res://Images//Art//World/ForestGrass.tscn"), GRASS];
+	return [grassScene, GRASS];
 
 func loadTerrain(layerX : int, layerY : int):
 	var terrain = getRandomTerrain();
@@ -157,31 +168,31 @@ func getRandomGrassObject():
 	
 	sum += self.GRASS_STICK_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Stick.tscn"), STICK];
+		return [stickScene, STICK];
 	
 	sum += self.GRASS_LEAF_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Leaf.tscn"), LEAF];
+		return [leafScene, LEAF];
 	
 	sum += self.GRASS_TAR_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Tar.tscn"), TAR];
+		return [tarScene, TAR];
 	
 	sum += self.GRASS_BOULDER_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Boulder.tscn"), BOULDER];
+		return [boulderScene, BOULDER];
 	
 	sum += self.GRASS_TREE_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Tree.tscn"), TREE];
+		return [treeScene, TREE];
 	
 	sum += self.GRASS_CAMPFIRE_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Objects//Campfire.tscn"), CAMPFIRE];
+		return [campfireScene, CAMPFIRE];
 	
 	sum += self.GRASS_ENEMY_SPAWN_RATE;
 	if value <= (sum / self.GRASS_SPAWN_RATE_SUM):
-		return [load("res://Entities//Enemy.tscn"), ENEMY];
+		return [enemyScene, ENEMY];
 	
 	return null;
 
@@ -194,31 +205,31 @@ func getRandomDirtObject():
 	
 	sum += self.DIRT_STICK_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Stick.tscn"), STICK];
+		return [stickScene, STICK];
 	
 	sum += self.DIRT_LEAF_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Leaf.tscn"), LEAF];
+		return [leafScene, LEAF];
 	
 	sum += self.DIRT_TAR_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Tar.tscn"), TAR];
+		return [tarScene, TAR];
 	
 	sum += self.DIRT_BOULDER_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Boulder.tscn"), BOULDER];
+		return [boulderScene, BOULDER];
 	
 	sum += self.DIRT_TREE_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Tree.tscn"), TREE];
+		return [treeScene, TREE];
 	
 	sum += self.DIRT_CAMPFIRE_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Objects//Campfire.tscn"), CAMPFIRE];
+		return [campfireScene, CAMPFIRE];
 	
 	sum += self.DIRT_ENEMY_SPAWN_RATE;
 	if value <= (sum / self.DIRT_SPAWN_RATE_SUM):
-		return [load("res://Entities//Enemy.tscn"), ENEMY];
+		return [enemyScene, ENEMY];
 	
 	return null;
 
