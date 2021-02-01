@@ -54,6 +54,7 @@ func _ready():
 	self.visitedBoxes[0] = [];
 	self.lastVisitedBox = 1;
 	loadTerrain(0, 0);
+	generateLocalBoxes(0, 0);
 	
 	pass;
 
