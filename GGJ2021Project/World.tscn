@@ -92,8 +92,9 @@ text = "A game by Jack Koscheka, Jon Ginsburg, and Darrell Wulff"
 align = 1
 valign = 1
 
-[node name="GameMusic" type="AudioStreamPlayer2D" parent="."]
+[node name="GameMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
+volume_db = -5.0
 [connection signal="closestCampfire" from="." to="View" method="getClosestCampfire"]
 [connection signal="updateWorldSignal" from="View" to="." method="updateWorld"]
 [connection signal="pressed" from="CanvasLayer/StartMenu/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
