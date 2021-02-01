@@ -79,11 +79,16 @@ func updateMovement(delta):
 	var velocity = self.SPEED * delta * self.movement.direction;
 	
 	if velocity.length() > 0:
+		if !$AudioRunning.playing:
+			$AudioRunning.play();
 		var collision = move_and_collide(velocity);
 		if collision:
 			velocity.slide(collision.normal);
 			self.position += velocity;
 		emit_signal("move");
+	else:
+		if $AudioRunning.playing:
+			$AudioRunning.stop();
 	
 	pass;
 
